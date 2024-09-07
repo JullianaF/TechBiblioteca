@@ -1,0 +1,5 @@
+Pense em Python: Pense como um Cientista da Computação,Allen B. Downey,2015
+O Diário de um Princesa Desastrada.,Maidy Lacerda.,2024
+Introdução à Programação com Python,Nilo Ney Coutinho Menezes,2019
+Java: Como Programar,Paul Deitel e Harvey Deitel,2016
+Código Limpo: Habilidades Práticas do Agile Software,Robert C. Martin,2011
