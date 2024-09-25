@@ -1,5 +1,4 @@
 package com.techbiblioteca;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,16 +11,14 @@ public class TechBibliotecaApp {
         livros = FileManager.carregarLivros();
         recommendationTree = new BookRecommendationTree();
 
-        // Adiciona os livros carregados à árvore de recomendação
         for (Book livro : livros) {
             recommendationTree.insert(livro);
         }
-
         int opcao = 0;
         while (opcao != 6) {
             exibirMenu();
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Consome a nova linha após o int
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -49,7 +46,6 @@ public class TechBibliotecaApp {
 
         FileManager.salvarLivros(livros);
     }
-
     private static void exibirMenu() {
         System.out.println("------------ TechBiblioteca ------------");
         System.out.println("1. Adicionar Livro.");
@@ -68,11 +64,11 @@ public class TechBibliotecaApp {
         String author = scanner.nextLine();
         System.out.print("Digite o ano de publicação do livro: ");
         int year = scanner.nextInt();
-        scanner.nextLine(); // Consome a nova linha após o int
+        scanner.nextLine();
 
         Book newBook = new Book(title, author, year);
         livros.add(newBook);
-        recommendationTree.insert(newBook); // Insere na árvore de recomendação
+        recommendationTree.insert(newBook);  
 
         FileManager.salvarLivros(livros);
         System.out.println("\nLivro adicionado com sucesso!\n");
@@ -103,7 +99,7 @@ public class TechBibliotecaApp {
     private static void recommendBooksByAuthor(Scanner scanner) {
         System.out.print("\nDigite o nome do autor para recomendação: ");
         String author = scanner.nextLine();
-        List<Book> recommendations = (List<Book>) recommendationTree.recommendBooksByAuthor(author);
+        List<Book> recommendations = recommendationTree.recommendBooksByAuthor(author);
         
         if (recommendations.isEmpty()) {
             System.out.println("\nNenhum livro encontrado para o autor: " + author + "\n");

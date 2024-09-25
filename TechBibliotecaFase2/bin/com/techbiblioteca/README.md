@@ -15,6 +15,8 @@ TechBiblioteca é um sistema de gerenciamento de livros desenvolvido em Java. Ut
 
 - **Estrutura de Dados**: Lista Encadeada
 - **Algoritmos de Ordenação**: Bubble Sort, Quick Sort
+<<<<<<< HEAD
+=======
 
 - **O projeto é dividido em várias classes**:
 
@@ -23,6 +25,7 @@ TechBiblioteca é um sistema de gerenciamento de livros desenvolvido em Java. Ut
 3. FileManager: Responsável pela leitura e escrita dos livros em um arquivo.
 4. SortUtil: Contém métodos para ordenar livros usando Bubble Sort e Quick Sort.
 5. TechBibliotecaApp: Interface principal do usuário que gerencia a interação com o usuário.
+>>>>>>> 17f9895a18013c1dc05fa3c824476858f830c6dd
 
 ## Requisitos:
 
