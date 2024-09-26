@@ -1,24 +1,24 @@
 package com.techbiblioteca;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class TechBibliotecaApp {
-
     private static List<Book> livros;
+    private static BookRecommendationTree recommendationTree;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        // Carrega os livros do arquivo
         livros = FileManager.carregarLivros();
+        recommendationTree = new BookRecommendationTree();
 
+        for (Book livro : livros) {
+            recommendationTree.insert(livro);
+        }
         int opcao = 0;
         while (opcao != 6) {
             exibirMenu();
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Consome a nova linha após o int
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -34,29 +34,27 @@ public class TechBibliotecaApp {
                     sortBooksByAuthor();
                     break;
                 case 5:
-                    deleteBook(scanner);
+                    recommendBooksByAuthor(scanner);
                     break;
                 case 6:
-                    System.out.println("\nObrigado por usar a TechBiblioteca! Todos os livros foram atualizados com sucesso.");
+                    System.out.println("A TechBiblioteca foi atualizada com sucesso! Obrigado por usar o sistema.");
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }
         }
 
-        // Salva os livros no arquivo ao fechar o programa
         FileManager.salvarLivros(livros);
     }
-
     private static void exibirMenu() {
-        System.out.println("\n------------ TechBiblioteca ------------");
-        System.out.println("1. Adicionar Livro");
-        System.out.println("2. Listar Livros");
-        System.out.println("3. Ordenar Livros por Título");
-        System.out.println("4. Ordenar Livros por Autor");
-        System.out.println("5. Excluir Livro");
-        System.out.println("6. Sair");
-        System.out.print("Digite sua escolha: ");
+        System.out.println("------------ TechBiblioteca ------------");
+        System.out.println("1. Adicionar Livro.");
+        System.out.println("2. Listar Livros.");
+        System.out.println("3. Ordenar Livros por Título.");
+        System.out.println("4. Ordenar Livros por Autor.");
+        System.out.println("5. Recomendar Livros por Autor.");
+        System.out.println("6. Sair.");
+        System.out.print("\nDigite sua escolha: ");
     }
 
     private static void addBook(Scanner scanner) {
@@ -66,47 +64,51 @@ public class TechBibliotecaApp {
         String author = scanner.nextLine();
         System.out.print("Digite o ano de publicação do livro: ");
         int year = scanner.nextInt();
-        scanner.nextLine(); // Consome a nova linha após o int
+        scanner.nextLine();
 
-        livros.add(new Book(title, author, year));
+        Book newBook = new Book(title, author, year);
+        livros.add(newBook);
+        recommendationTree.insert(newBook);  
 
-        // Salva a lista de livros após adicionar um novo
         FileManager.salvarLivros(livros);
-        System.out.println("Livro adicionado com sucesso!");
+        System.out.println("\nLivro adicionado com sucesso!\n");
     }
 
     private static void listBooks() {
+        System.out.println("\nLista de Livros:");
         if (livros.isEmpty()) {
-            System.out.println("\nNenhum livro cadastrado.");
+            System.out.println("Nenhum livro cadastrado.\n");
         } else {
-            System.out.println("\nLista de Livros:");
             for (Book livro : livros) {
                 System.out.println(livro);
             }
         }
+        System.out.println();
     }
 
     private static void sortBooksByTitle() {
-        Book[] booksArray = livros.toArray(new Book[0]);
-        SortUtil.bubbleSort(booksArray, true); // True para ordenar por título
-        livros = new ArrayList<>(List.of(booksArray));
-        System.out.println("\nLivros ordenados por título.");
-        listBooks(); // Mostra a lista após ordenar
+        livros.sort((b1, b2) -> b1.getTitle().compareTo(b2.getTitle()));
+        System.out.println("\nLivros ordenados por título.\n");
     }
 
     private static void sortBooksByAuthor() {
-        Book[] booksArray = livros.toArray(new Book[0]);
-        SortUtil.bubbleSort(booksArray, false); // False para ordenar por autor
-        livros = new ArrayList<>(List.of(booksArray));
-        System.out.println("\nLivros ordenados por autor.");
-        listBooks(); // Mostra a lista após ordenar
+        livros.sort((b1, b2) -> b1.getAuthor().compareTo(b2.getAuthor()));
+        System.out.println("\nLivros ordenados por autor.\n");
     }
 
-    private static void deleteBook(Scanner scanner) {
-        System.out.print("\nDigite o título do livro a ser excluído: ");
-        String title = scanner.nextLine();
-        livros.removeIf(book -> book.getTitle().equalsIgnoreCase(title));
-        FileManager.salvarLivros(livros);
-        System.out.println("Livro excluído com sucesso, se encontrado.");
+    private static void recommendBooksByAuthor(Scanner scanner) {
+        System.out.print("\nDigite o nome do autor para recomendação: ");
+        String author = scanner.nextLine();
+        List<Book> recommendations = recommendationTree.recommendBooksByAuthor(author);
+        
+        if (recommendations.isEmpty()) {
+            System.out.println("\nNenhum livro encontrado para o autor: " + author + "\n");
+        } else {
+            System.out.println("\nRecomendações de livros para o autor " + author + ":");
+            for (Book book : recommendations) {
+                System.out.println(book);
+            }
+            System.out.println();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.techbiblioteca;
 
 public class SortUtil {
+
     // Algoritmo Bubble Sort para ordenar livros
     public static void bubbleSort(Book[] books, boolean sortByTitle) {
         int n = books.length;
@@ -14,6 +15,7 @@ public class SortUtil {
             }
         }
     }
+
     // Algoritmo Quick Sort para ordenar livros
     public static void quickSort(Book[] books, int low, int high, boolean sortByTitle) {
         if (low < high) {
@@ -22,6 +24,7 @@ public class SortUtil {
             quickSort(books, pi + 1, high, sortByTitle);
         }
     }
+
     private static int partition(Book[] books, int low, int high, boolean sortByTitle) {
         Book pivot = books[high];
         int i = (low - 1);
@@ -38,6 +41,7 @@ public class SortUtil {
         books[high] = temp;
         return i + 1;
     }
+
     private static int compareBooks(Book b1, Book b2, boolean sortByTitle) {
         if (sortByTitle) {
             return b1.getTitle().compareTo(b2.getTitle());
